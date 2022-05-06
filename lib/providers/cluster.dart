@@ -46,7 +46,7 @@ class Cluster {
   }
 }
 
-class SignificantPlaces extends ChangeNotifier {
+class SignificantPlaces {
   Map<String, Map<String, dynamic>> places = {};
   void addPlace(Cluster cluster) {
     String key1 =

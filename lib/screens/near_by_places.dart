@@ -25,8 +25,7 @@ class _NearByPlacesScreenState extends State<NearByPlacesScreen> {
     String apiKey = dotenv.env['API_KEY']!;
     // 'AIzaSyC1zyhWR2YxPv5UGXh4HMEU70x1iv9EaQy'
     googlePlace = GooglePlace(apiKey);
-    snapshot =
-        _getCurrentUserLocation().then((value) => getNearByPlaces(value!));
+    snapshot = getNearByPlaces();
     super.initState();
   }
 
@@ -40,7 +39,7 @@ class _NearByPlacesScreenState extends State<NearByPlacesScreen> {
         margin: const EdgeInsets.all(10),
         child: FutureBuilder(
           future: snapshot,
-          builder: (BuildContext context, snapShot) {
+          builder: (BuildContext context, AsyncSnapshot snapShot) {
             if (snapShot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -63,32 +62,48 @@ class _NearByPlacesScreenState extends State<NearByPlacesScreen> {
                         index: index,
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text(
-                          nearByResults![index].name!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                          ),
-                        ),
+                        padding: const EdgeInsets.all(5.0),
+                        child: nearByResults![index].name != null
+                            ? Text(
+                                nearByResults![index].name!,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              )
+                            : Text(
+                                'Name',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: ClipRect(
-                            child: Text(
-                          nearByResults![index].types![0],
-                        )),
+                        padding: const EdgeInsets.all(5.0),
+                        child: nearByResults![index].types != null
+                            ? ClipRect(
+                                child: Text(
+                                nearByResults![index].types![0],
+                              ))
+                            : Text('Type'),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: ClipRect(
-                          child: Text(
-                              'Latitude: ${nearByResults![index].geometry!.location!.lat.toString()}  Longitude: ${nearByResults![index].geometry!.location!.lng.toString()}'),
-                        ),
+                        padding: const EdgeInsets.all(5),
+                        child: nearByResults![index].geometry != null
+                            ? ClipRect(
+                                child: Text(
+                                    'Latitude: ${nearByResults![index].geometry!.location!.lat.toString()}  Longitude: ${nearByResults![index].geometry!.location!.lng.toString()}'),
+                              )
+                            : Text('Location'),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text(nearByResults![index].formattedAddress!),
+                        padding: const EdgeInsets.all(5.0),
+                        child: nearByResults![index].formattedAddress != null
+                            ? Text(nearByResults![index].formattedAddress!)
+                            : Text('Address'),
                       ),
                     ],
                   ),
@@ -98,14 +113,14 @@ class _NearByPlacesScreenState extends State<NearByPlacesScreen> {
           },
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     setState(() {
-      //       getNearByPlaces(loc!);
-      //     });
-      //   },
-      //   child: const Icon(Icons.refresh),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          snapshot = getNearByPlaces();
+          setState(() {});
+        },
+        child: const Icon(Icons.refresh),
+        backgroundColor: Colors.purple,
+      ),
     );
   }
 
@@ -113,19 +128,23 @@ class _NearByPlacesScreenState extends State<NearByPlacesScreen> {
     try {
       locData = await geoloc.Location().getLocation();
       loc = Location(lat: locData!.latitude, lng: locData!.longitude);
-
       return loc;
     } catch (error) {
       return null;
     }
   }
 
-  Future<void> getNearByPlaces(Location loc) async {
+  Future<void> getNearByPlaces() async {
+    var loc;
+    try {
+      locData = await geoloc.Location().getLocation();
+      print(locData);
+      loc = Location(lat: locData!.latitude, lng: locData!.longitude);
+    } catch (error) {}
     int index = 0;
     var result = await googlePlace!.search.getNearBySearch(
       loc,
       5000,
-      type: 'attractions',
     );
     if (result != null && result.results != null && mounted) {
       nearByResults = result.results;
@@ -167,7 +186,7 @@ class PlacePhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 230,
+      height: nearByResults![index].photos != null ? 230 : 100,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ClipRRect(
@@ -178,8 +197,8 @@ class PlacePhoto extends StatelessWidget {
                   fit: BoxFit.fill,
                 )
               : const SizedBox(
-                  height: 230,
-                  child: Icon(Icons.no_flash_outlined),
+                  height: 100,
+                  child: Icon(Icons.image),
                 ),
         ),
       ),

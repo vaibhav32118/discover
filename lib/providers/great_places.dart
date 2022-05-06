@@ -28,7 +28,7 @@ class GreatPlaces with ChangeNotifier {
   Future<void> addPlace(
     String pickedTitle,
     File pickedImage,
-    //PlaceLocation pickedLocation,
+    // PlaceLocation pickedLocation,
   ) async {
     // final address = await LocationHelper.getPlaceAddress(
     //     pickedLocation.latitude, pickedLocation.longitude);

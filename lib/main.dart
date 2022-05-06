@@ -35,9 +35,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx3) => LocationProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx4) => SignificantPlaces(),
-        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) {

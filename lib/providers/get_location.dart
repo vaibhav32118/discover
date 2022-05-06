@@ -37,8 +37,8 @@ class LocationProvider extends ChangeNotifier {
   }
 
   double getDistanceBetweenCLusterLocatio(Cluster clus, Locat location) {
-    var lat1 = clus.mean_location!.latitude!;
-    var long1 = clus.mean_location!.longitude!;
+    var lat1 = clus.mean_location?.latitude!;
+    var long1 = clus.mean_location?.longitude!;
     var lat2 = location.latitude;
     var long2 = location.longitude;
 
@@ -85,7 +85,7 @@ class LocationProvider extends ChangeNotifier {
       Locat location_current = Locat(currentLocation.latitude,
           currentLocation.longitude, currentLocation.time!);
       buildCluster(location_current);
-      print(significant_places.places);
+      // print(significant_places.places);
       notifyListeners();
     });
   }

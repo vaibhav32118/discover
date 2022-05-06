@@ -47,10 +47,10 @@ class _RecommendedPlacesScreenState extends State<RecommendedPlacesScreen> {
             builder: (ctx, loc, _) {
               DateTime date = DateTime.now();
               DateTime now = DateTime.now();
-              String date1 = DateFormat('yyyy-M-dd').format(now);
+              String date1 = DateFormat('yyyy-M-d').format(now);
+              // print(date1);
               var place = loc.significant_places.places[date1.toString()];
-              // print(place!.values.elementAt(0));
-
+              // print(place?.values.elementAt(0));
               return Container(
                 margin: const EdgeInsets.all(10),
                 height: 800,
@@ -58,12 +58,7 @@ class _RecommendedPlacesScreenState extends State<RecommendedPlacesScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      ListTile(
-                        leading: Icon(Icons.gps_fixed),
-                        title: Text('Current Geo Cordinate'),
-                        subtitle: Text(
-                            '${loc.locData?.latitude}, ${loc.locData?.longitude} \n${date.toString()}'),
-                      ),
+                      CurrentLocationWidget(),
                       ListTile(
                         leading: Icon(Icons.place_outlined),
                         title: Text('Extracted Places'),
@@ -79,6 +74,27 @@ class _RecommendedPlacesScreenState extends State<RecommendedPlacesScreen> {
               );
             },
           ),
+        );
+      },
+    );
+  }
+}
+
+class CurrentLocationWidget extends StatelessWidget {
+  const CurrentLocationWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<LocationProvider>(
+      builder: (ctx, loc, _) {
+        DateTime date = DateTime.now();
+        return ListTile(
+          leading: Icon(Icons.gps_fixed),
+          title: Text('Current Geo Cordinate'),
+          subtitle: Text(
+              '${loc.locData?.latitude}, ${loc.locData?.longitude} \n${date.toString()}'),
         );
       },
     );

@@ -153,10 +153,10 @@ class _DetailsPageState extends State<DetailsPage> {
         title: Text(detailsResult != null && detailsResult!.name != null
             ? detailsResult!.name!
             : 'Details'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.purple,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.deepPurple,
         onPressed: () {
           getDetils(placeId!);
         },
@@ -231,7 +231,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           color: Colors.white,
                                         ),
                                       ),
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: Colors.purple,
                                     ),
                                   );
                                 },

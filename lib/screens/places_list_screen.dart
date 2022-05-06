@@ -48,7 +48,7 @@ class PlacesListScreen extends StatelessWidget {
                             ),
                             title: Text(greatPlaces.items[i].title),
                             subtitle: const Text(
-                              "Image",
+                              "Address",
                             ), //Text(greatPlaces.items[i].location.address!),
                             onTap: () {
                               Navigator.of(context).pushNamed(
