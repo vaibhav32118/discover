@@ -101,8 +101,8 @@ class _NearByPlacesScreenState extends State<NearByPlacesScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: nearByResults![index].formattedAddress != null
-                            ? Text(nearByResults![index].formattedAddress!)
+                        child: nearByResults![index].vicinity != null
+                            ? Text(nearByResults![index].vicinity!)
                             : Text('Address'),
                       ),
                     ],
